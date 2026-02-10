@@ -84,6 +84,16 @@ void _setup_gpio() {
     pinMode(9, OUTPUT); // LoRa Radio CS Pin to HIGH (Inhibit the SPI Communication for this module)
     digitalWrite(9, HIGH);
 
+    // Deactivate CC1101 and NRF24 SPI CS pins at startup (prevent bus conflicts)
+#ifdef USE_CC1101_VIA_SPI
+    pinMode(CC1101_SS_PIN, OUTPUT);
+    digitalWrite(CC1101_SS_PIN, HIGH);
+#endif
+#ifdef USE_NRF24_VIA_SPI
+    pinMode(NRF24_SS_PIN, OUTPUT);
+    digitalWrite(NRF24_SS_PIN, HIGH);
+#endif
+
     // Setup for Trackball
     pinMode(UP_BTN, INPUT_PULLUP);
     attachInterrupt(UP_BTN, ISR_up, FALLING);
